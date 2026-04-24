@@ -1,0 +1,27 @@
+.topbar {
+  width: 100%;
+  height: 56px;
+  background-color: #1e293b;
+  border-bottom: 1px solid #1e3a5f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.topbar__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.topbar__icon {
+  color: #58a6ff;
+}
+
+.topbar__name {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #e6edf3;
+  letter-spacing: 0.04em;
+}

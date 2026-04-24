@@ -1,12 +1,11 @@
-
+import Topbar from './components/Topbar/Topbar'
+import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-   
-    </>
+    <div className="app">
+      <Topbar />
+    </div>
   )
 }
 
