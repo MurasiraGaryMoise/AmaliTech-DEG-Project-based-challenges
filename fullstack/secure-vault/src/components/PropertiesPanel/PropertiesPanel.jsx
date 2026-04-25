@@ -1,6 +1,6 @@
 import './PropertiesPanel.css'
 
-// Mock data — will be replaced with real selected file from data.json
+// Temp Mock data
 const mockFile = {
   id: 'email_1',
   name: 'Email_Thread_Jan2024.pdf',

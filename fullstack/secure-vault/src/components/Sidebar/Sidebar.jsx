@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { VscFolder, VscFolderOpened, VscFile } from 'react-icons/vsc'
 import './Sidebar.css'
 
-function Sidebar( { data } ) {
+function Sidebar({ data }) {
 
   return (
     <aside className="sidebar">
@@ -20,11 +20,51 @@ function Sidebar( { data } ) {
       </div>
 
       <div className="sidebar__tree">
-        {/* Tree will go here */}
-        
+        <ul style={{ listStyle: "none" }}>
+          {data.map(root => (
+            <li key={root.id}>
+              <span>
+                {root.type === "folder" ? <VscFolder /> : <VscFile />}
+                {root.name}
+              </span>
+
+              <ul style={{ paddingLeft: "30px", listStyle: "none" }}>
+                {root.type === "folder" && root.children?.map(sub_folder => (
+                  <Sub_folder sub_folder={sub_folder} key={sub_folder.id} />
+                ))}
+              </ul>
+            </li>
+          ))}
+        </ul>
+
       </div>
     </aside>
   )
 }
 
+
+const Sub_folder = ({ sub_folder }) => {
+  return (
+    <li>
+      <span>
+        {sub_folder.type === "folder" ? <VscFolder /> : <VscFile />}
+        {sub_folder.name}
+      </span>
+
+      <ul style={{ paddingLeft: "30px", listStyle: "none" }}>
+        {sub_folder.type === "folder" && sub_folder.children?.map(child => (
+          <Sub_folder sub_folder={child} key={child.id} />
+        ))}
+      </ul>
+
+      {/* {sub_folder.type === "folder" && (
+        <ul style={{ paddingLeft: "30px", listStyle: "none" }}>
+          {sub_folder.children?.map(child => (
+            <Sub_folder sub_folder={child} key={child.id} />
+          ))}
+        </ul>
+      )} */}
+    </li>
+  )
+}
 export default Sidebar
