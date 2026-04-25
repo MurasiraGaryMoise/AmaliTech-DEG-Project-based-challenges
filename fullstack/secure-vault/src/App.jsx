@@ -33,7 +33,7 @@ function App() {
       <Topbar />
       <div className="workspace">
         <Sidebar data={data} onFileSelect={handleFileSelect} />
-        <MainPanel selectedFile={selectedFile} recentFiles={recentFiles} />
+        <MainPanel selectedFile={selectedFile} recentFiles={recentFiles} onFileSelect={handleFileSelect} />
       </div>
       <Footer />
     </div>

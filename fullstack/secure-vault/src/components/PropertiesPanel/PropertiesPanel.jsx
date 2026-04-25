@@ -4,7 +4,7 @@ function getFileType(name) {
   return name?.split('.').pop()?.toLowerCase() || 'unknown'
 }
 
-function PropertiesPanel({ file, recentFiles = [] }) {
+function PropertiesPanel({ file, recentFiles = [], onFileSelect }) {
   return (
     <div className="properties-panel">
       <div className="properties-panel__header">
@@ -45,7 +45,7 @@ function PropertiesPanel({ file, recentFiles = [] }) {
         {recentFiles.length > 0 ? (
           <ul className="recents__list">
             {recentFiles.map((f) => (
-              <li key={f.id} className="recents__item">
+              <li key={f.id} className="recents__item" onClick={() => onFileSelect(f)}>
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/>
                   <polyline points="13 2 13 9 20 9"/>

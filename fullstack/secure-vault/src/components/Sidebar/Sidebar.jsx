@@ -1,8 +1,61 @@
 import { VscFolder, VscFolderOpened, VscFile, VscChevronRight } from 'react-icons/vsc'
-import './Sidebar.css'
 import { useState } from 'react'
+import './Sidebar.css'
+
+function filterTree(nodes, query) {
+  if (!query) return nodes
+
+  return nodes.reduce((acc, node) => {
+    if (node.type === 'file') {
+      if (node.name.toLowerCase().includes(query.toLowerCase())) {
+        acc.push(node)
+      }
+    } else if (node.type === 'folder') {
+      const filteredChildren = filterTree(node.children || [], query)
+      if (filteredChildren.length > 0) {
+        acc.push({ ...node, children: filteredChildren, forceOpen: true })
+      }
+    }
+    return acc
+  }, [])
+}
+
+const Sub_folder = ({ sub_folder, onFileSelect }) => {
+  const [isOpen, setIsOpen] = useState(false)
+  const toggleOpen = () => setIsOpen(!isOpen)
+  const isFolder = sub_folder.type === 'folder'
+  const isExpanded = sub_folder.forceOpen || isOpen
+
+  return (
+    <li>
+      <span
+        className="tree-item"
+        onClick={isFolder ? toggleOpen : () => onFileSelect(sub_folder)}
+      >
+        {isFolder && (
+          <VscChevronRight
+            className="tree-chevron"
+            style={{ transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)' }}
+          />
+        )}
+        {isFolder ? <VscFolder /> : <VscFile />}
+        {sub_folder.name}
+      </span>
+
+      {isFolder && isExpanded && sub_folder.children?.length > 0 && (
+        <ul style={{ paddingLeft: '20px' }}>
+          {sub_folder.children.map(child => (
+            <Sub_folder sub_folder={child} key={child.id} onFileSelect={onFileSelect} />
+          ))}
+        </ul>
+      )}
+    </li>
+  )
+}
 
 function Sidebar({ data, onFileSelect }) {
+  const [searchQuery, setSearchQuery] = useState('')
+  const filteredData = filterTree(data, searchQuery)
 
   return (
     <aside className="sidebar">
@@ -16,64 +69,27 @@ function Sidebar({ data, onFileSelect }) {
             className="search-bar__input"
             type="text"
             placeholder="Search..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
       </div>
 
       <div className="sidebar__tree">
         <ul>
-          {data.map(root => (
-            <Sub_folder sub_folder={root} key={root.id} onFileSelect={onFileSelect}/>
-            // <li key={root.id}>
-            //   <span>
-            //     {root.type === "folder" && <VscChevronRight />}
-            //     {root.type === "folder" ? <VscFolder /> : <VscFile />}
-            //     {root.name}
-            //   </span>
-
-            //   <ul style={{ paddingLeft: "30px", listStyle: "none" }}>
-            //     {root.type === "folder" && root.children?.map(sub_folder => (
-            //       <Sub_folder sub_folder={sub_folder} key={sub_folder.id} />
-            //     ))}
-            //   </ul>
-            // </li>
-          ))}
+          {filteredData.length > 0 ? (
+            filteredData.map(root => (
+              <Sub_folder sub_folder={root} key={root.id} onFileSelect={onFileSelect} />
+            ))
+          ) : (
+            <p style={{ color: '#484f58', fontSize: '0.8125rem', padding: '12px 16px' }}>
+              No results found
+            </p>
+          )}
         </ul>
-
       </div>
     </aside>
   )
 }
 
-
-const Sub_folder = ({ sub_folder, onFileSelect }) => {
-
-  const [isOpen, setIsOpen] = useState(false);
-  const toggleOpen = () => setIsOpen(!isOpen);
-
-  return (
-    <li>
-      <span className="tree-item" onClick={sub_folder.type === "folder" ? toggleOpen : () => onFileSelect(sub_folder)}>
-        {sub_folder.type === "folder" && <VscChevronRight className="tree-chevron" style={{ transform: isOpen ? "rotate(90deg)" : "rotate(0deg)" }}/>}
-        {sub_folder.type === "folder" ? <VscFolder /> : <VscFile />}
-        {sub_folder.name}
-      </span>
-
-      {sub_folder.type === "folder" && isOpen && (
-        <ul style={{ paddingLeft: "20px" }}>
-          {sub_folder.type === "folder" && sub_folder.children?.map(child => (
-            <Sub_folder sub_folder={child} key={child.id} onFileSelect={onFileSelect}/>
-          ))}
-        </ul>
-      )}
-      {/* {sub_folder.type === "folder" && (
-        <ul style={{ paddingLeft: "30px", listStyle: "none" }}>
-          {sub_folder.children?.map(child => (
-            <Sub_folder sub_folder={child} key={child.id} />
-          ))}
-        </ul>
-      )} */}
-    </li>
-  )
-}
 export default Sidebar
