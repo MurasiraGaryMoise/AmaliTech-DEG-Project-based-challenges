@@ -2,11 +2,11 @@ import Breadcrumb from '../Breadcrumb/Breadcrumb'
 import PropertiesPanel from '../PropertiesPanel/PropertiesPanel'
 import './MainPanel.css'
 
-function MainPanel() {
+function MainPanel( { selectedFile } ) {
   return (
     <main className="main-panel">
       <Breadcrumb />
-      <PropertiesPanel />
+      <PropertiesPanel file={selectedFile}/>
     </main>
   )
 }

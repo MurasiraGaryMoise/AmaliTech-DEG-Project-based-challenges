@@ -2,7 +2,7 @@ import { VscFolder, VscFolderOpened, VscFile, VscChevronRight } from 'react-icon
 import './Sidebar.css'
 import { useState } from 'react'
 
-function Sidebar({ data }) {
+function Sidebar({ data, onFileSelect }) {
 
   return (
     <aside className="sidebar">
@@ -23,7 +23,7 @@ function Sidebar({ data }) {
       <div className="sidebar__tree">
         <ul>
           {data.map(root => (
-            <Sub_folder sub_folder={root} key={root.id} />
+            <Sub_folder sub_folder={root} key={root.id} onFileSelect={onFileSelect}/>
             // <li key={root.id}>
             //   <span>
             //     {root.type === "folder" && <VscChevronRight />}
@@ -46,14 +46,14 @@ function Sidebar({ data }) {
 }
 
 
-const Sub_folder = ({ sub_folder }) => {
+const Sub_folder = ({ sub_folder, onFileSelect }) => {
 
   const [isOpen, setIsOpen] = useState(false);
   const toggleOpen = () => setIsOpen(!isOpen);
 
   return (
     <li>
-      <span className="tree-item" onClick={toggleOpen}>
+      <span className="tree-item" onClick={sub_folder.type === "folder" ? toggleOpen : () => onFileSelect(sub_folder)}>
         {sub_folder.type === "folder" && <VscChevronRight className="tree-chevron" style={{ transform: isOpen ? "rotate(90deg)" : "rotate(0deg)" }}/>}
         {sub_folder.type === "folder" ? <VscFolder /> : <VscFile />}
         {sub_folder.name}
@@ -62,7 +62,7 @@ const Sub_folder = ({ sub_folder }) => {
       {sub_folder.type === "folder" && isOpen && (
         <ul style={{ paddingLeft: "20px" }}>
           {sub_folder.type === "folder" && sub_folder.children?.map(child => (
-            <Sub_folder sub_folder={child} key={child.id} />
+            <Sub_folder sub_folder={child} key={child.id} onFileSelect={onFileSelect}/>
           ))}
         </ul>
       )}
