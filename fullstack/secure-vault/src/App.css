@@ -5,3 +5,9 @@
   width: 100%;
   background-color: #0f172a;
 }
+
+.workspace {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
