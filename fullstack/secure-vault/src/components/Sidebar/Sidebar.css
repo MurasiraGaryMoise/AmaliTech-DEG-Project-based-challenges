@@ -59,3 +59,29 @@
   overflow-y: auto;
   padding: 8px 0;
 }
+
+.sidebar__tree ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tree-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 12px;
+  font-size: 0.8125rem;
+  color: #c9d1d9;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.tree-item:hover {
+  background-color: #1e3a5f;
+}
+
+.tree-chevron {
+  transition: transform 0.15s ease;
+  flex-shrink: 0;
+}

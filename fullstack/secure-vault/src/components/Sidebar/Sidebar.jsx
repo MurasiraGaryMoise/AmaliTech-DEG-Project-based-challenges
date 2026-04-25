@@ -21,7 +21,7 @@ function Sidebar({ data }) {
       </div>
 
       <div className="sidebar__tree">
-        <ul style={{ listStyle: "none" }}>
+        <ul>
           {data.map(root => (
             <Sub_folder sub_folder={root} key={root.id} />
             // <li key={root.id}>
@@ -53,14 +53,14 @@ const Sub_folder = ({ sub_folder }) => {
 
   return (
     <li>
-      <span onClick={toggleOpen} style={{ cursor: "pointer" }}>
-        {sub_folder.type === "folder" && <VscChevronRight style={{ transform: isOpen ? "rotate(90deg)" : "rotate(0deg)" }}/>}
+      <span className="tree-item" onClick={toggleOpen}>
+        {sub_folder.type === "folder" && <VscChevronRight className="tree-chevron" style={{ transform: isOpen ? "rotate(90deg)" : "rotate(0deg)" }}/>}
         {sub_folder.type === "folder" ? <VscFolder /> : <VscFile />}
         {sub_folder.name}
       </span>
 
       {sub_folder.type === "folder" && isOpen && (
-        <ul style={{ paddingLeft: "30px", listStyle: "none" }}>
+        <ul style={{ paddingLeft: "20px" }}>
           {sub_folder.type === "folder" && sub_folder.children?.map(child => (
             <Sub_folder sub_folder={child} key={child.id} />
           ))}
