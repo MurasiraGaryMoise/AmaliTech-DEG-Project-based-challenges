@@ -1,6 +1,8 @@
+import { useEffect, useState } from 'react';
 import './Sidebar.css'
 
-function Sidebar() {
+function Sidebar( { data } ) {
+
   return (
     <aside className="sidebar">
       <div className="sidebar__header">
@@ -19,6 +21,7 @@ function Sidebar() {
 
       <div className="sidebar__tree">
         {/* Tree will go here */}
+        
       </div>
     </aside>
   )
