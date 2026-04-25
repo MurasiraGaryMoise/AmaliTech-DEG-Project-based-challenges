@@ -25,15 +25,16 @@ function getVisibleItems(nodes, openFolders) {
   }, [])
 }
 
-const Sub_folder = ({ sub_folder, onFileSelect, openFolders, toggleFolder, focusedId }) => {
+const Sub_folder = ({ sub_folder, onFileSelect, openFolders, toggleFolder, focusedId, selectedId }) => {
   const isFolder = sub_folder.type === 'folder'
   const isExpanded = openFolders.has(sub_folder.id) || sub_folder.forceOpen
   const isFocused = sub_folder.id === focusedId
+  const isSelected = sub_folder.id === selectedId
 
   return (
     <li>
       <span
-        className={`tree-item${isFocused ? ' tree-item--focused' : ''}`}
+        className={`tree-item${isFocused ? ' tree-item--focused' : ''}${isSelected ? ' tree-item--selected' : ''}`}
         onClick={isFolder ? () => toggleFolder(sub_folder.id) : () => onFileSelect(sub_folder)}
       >
         {isFolder && (
@@ -56,6 +57,7 @@ const Sub_folder = ({ sub_folder, onFileSelect, openFolders, toggleFolder, focus
               openFolders={openFolders}
               toggleFolder={toggleFolder}
               focusedId={focusedId}
+              selectedId={selectedId}
             />
           ))}
         </ul>
@@ -64,7 +66,7 @@ const Sub_folder = ({ sub_folder, onFileSelect, openFolders, toggleFolder, focus
   )
 }
 
-function Sidebar({ data, onFileSelect }) {
+function Sidebar({ data, onFileSelect, selectedId }) {
   const [searchQuery, setSearchQuery] = useState('')
   const [openFolders, setOpenFolders] = useState(new Set())
   const [focusedIndex, setFocusedIndex] = useState(-1)
@@ -133,6 +135,7 @@ function Sidebar({ data, onFileSelect }) {
                 openFolders={openFolders}
                 toggleFolder={toggleFolder}
                 focusedId={focusedId}
+                selectedId={selectedId}
               />
             ))
           ) : (

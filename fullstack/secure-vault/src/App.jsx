@@ -32,7 +32,7 @@ function App() {
     <div className="app">
       <Topbar />
       <div className="workspace">
-        <Sidebar data={data} onFileSelect={handleFileSelect} />
+        <Sidebar data={data} onFileSelect={handleFileSelect} selectedId={selectedFile?.id} />
         <MainPanel selectedFile={selectedFile} recentFiles={recentFiles} onFileSelect={handleFileSelect} />
       </div>
       <Footer />
