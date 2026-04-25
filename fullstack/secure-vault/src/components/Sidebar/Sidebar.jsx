@@ -1,4 +1,4 @@
-import { VscFolder, VscFolderOpened, VscFile } from 'react-icons/vsc'
+import { VscFolder, VscFolderOpened, VscFile, VscChevronRight } from 'react-icons/vsc'
 import './Sidebar.css'
 
 function Sidebar({ data }) {
@@ -24,6 +24,7 @@ function Sidebar({ data }) {
           {data.map(root => (
             <li key={root.id}>
               <span>
+                {root.type === "folder" && <VscChevronRight />}
                 {root.type === "folder" ? <VscFolder /> : <VscFile />}
                 {root.name}
               </span>
@@ -47,6 +48,7 @@ const Sub_folder = ({ sub_folder }) => {
   return (
     <li>
       <span>
+        {sub_folder.type === "folder" && <VscChevronRight />}
         {sub_folder.type === "folder" ? <VscFolder /> : <VscFile />}
         {sub_folder.name}
       </span>
