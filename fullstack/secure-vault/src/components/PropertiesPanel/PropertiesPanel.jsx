@@ -1,25 +1,10 @@
 import './PropertiesPanel.css'
 
-// Temp Mock data
-const mockFile = {
-  id: 'email_1',
-  name: 'Email_Thread_Jan2024.pdf',
-  size: '4.2MB',
-}
-
-const mockRecents = [
-  { id: 'file_summ', name: 'Case_Summary_Draft_v3.docx' },
-  { id: 'will_1', name: 'Last_Will_Testament.pdf' },
-]
-
 function getFileType(name) {
   return name?.split('.').pop()?.toLowerCase() || 'unknown'
 }
 
-function PropertiesPanel({ file }) {
-  const selectedFile = mockFile
-  const recentFiles = mockRecents
-
+function PropertiesPanel({ file, recentFiles = [] }) {
   return (
     <div className="properties-panel">
       <div className="properties-panel__header">
@@ -59,13 +44,13 @@ function PropertiesPanel({ file }) {
         <h3 className="recents__title">Recently Viewed</h3>
         {recentFiles.length > 0 ? (
           <ul className="recents__list">
-            {recentFiles.map((file) => (
-              <li key={file.id} className="recents__item">
+            {recentFiles.map((f) => (
+              <li key={f.id} className="recents__item">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/>
                   <polyline points="13 2 13 9 20 9"/>
                 </svg>
-                <span>{file.name}</span>
+                <span>{f.name}</span>
               </li>
             ))}
           </ul>

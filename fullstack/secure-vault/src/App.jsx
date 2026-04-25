@@ -3,30 +3,37 @@ import Sidebar from './components/Sidebar/Sidebar'
 import MainPanel from './components/MainPanel/MainPanel'
 import Footer from './components/Footer/Footer'
 import './App.css'
-import { useEffect, useState } from 'react';
-import PropertiesPanel from './components/PropertiesPanel/PropertiesPanel'
+import { useEffect, useState } from 'react'
 
 function App() {
-    const [data, setData] = useState([]);
-    const [selectedFile, setSelectedFile] = useState(null); //properties section
+  const [data, setData] = useState([])
+  const [selectedFile, setSelectedFile] = useState(null)
+  const [recentFiles, setRecentFiles] = useState([])
 
   const fetchData = async () => {
     const res = await fetch('/data.json')
-    const data = await res.json();
-    setData(data);
+    const data = await res.json()
+    setData(data)
   }
 
-  useEffect(()=>{
-    fetchData();
-  },[])
+  useEffect(() => {
+    fetchData()
+  }, [])
 
-  console.log(data)
+  const handleFileSelect = (file) => {
+    setSelectedFile(file)
+    setRecentFiles(prev => {
+      const filtered = prev.filter(f => f.id !== file.id)
+      return [file, ...filtered].slice(0, 5)
+    })
+  }
+
   return (
     <div className="app">
       <Topbar />
       <div className="workspace">
-        <Sidebar data={data} onFileSelect={setSelectedFile}/>
-        <MainPanel selectedFile={selectedFile}/>
+        <Sidebar data={data} onFileSelect={handleFileSelect} />
+        <MainPanel selectedFile={selectedFile} recentFiles={recentFiles} />
       </div>
       <Footer />
     </div>
