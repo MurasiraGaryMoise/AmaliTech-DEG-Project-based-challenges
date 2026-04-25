@@ -1,5 +1,6 @@
 import { VscFolder, VscFolderOpened, VscFile, VscChevronRight } from 'react-icons/vsc'
 import './Sidebar.css'
+import { useState } from 'react'
 
 function Sidebar({ data }) {
 
@@ -22,19 +23,20 @@ function Sidebar({ data }) {
       <div className="sidebar__tree">
         <ul style={{ listStyle: "none" }}>
           {data.map(root => (
-            <li key={root.id}>
-              <span>
-                {root.type === "folder" && <VscChevronRight />}
-                {root.type === "folder" ? <VscFolder /> : <VscFile />}
-                {root.name}
-              </span>
+            <Sub_folder sub_folder={root} key={root.id} />
+            // <li key={root.id}>
+            //   <span>
+            //     {root.type === "folder" && <VscChevronRight />}
+            //     {root.type === "folder" ? <VscFolder /> : <VscFile />}
+            //     {root.name}
+            //   </span>
 
-              <ul style={{ paddingLeft: "30px", listStyle: "none" }}>
-                {root.type === "folder" && root.children?.map(sub_folder => (
-                  <Sub_folder sub_folder={sub_folder} key={sub_folder.id} />
-                ))}
-              </ul>
-            </li>
+            //   <ul style={{ paddingLeft: "30px", listStyle: "none" }}>
+            //     {root.type === "folder" && root.children?.map(sub_folder => (
+            //       <Sub_folder sub_folder={sub_folder} key={sub_folder.id} />
+            //     ))}
+            //   </ul>
+            // </li>
           ))}
         </ul>
 
@@ -45,20 +47,25 @@ function Sidebar({ data }) {
 
 
 const Sub_folder = ({ sub_folder }) => {
+
+  const [isOpen, setIsOpen] = useState(false);
+  const toggleOpen = () => setIsOpen(!isOpen);
+
   return (
     <li>
-      <span>
-        {sub_folder.type === "folder" && <VscChevronRight />}
+      <span onClick={toggleOpen} style={{ cursor: "pointer" }}>
+        {sub_folder.type === "folder" && <VscChevronRight style={{ transform: isOpen ? "rotate(90deg)" : "rotate(0deg)" }}/>}
         {sub_folder.type === "folder" ? <VscFolder /> : <VscFile />}
         {sub_folder.name}
       </span>
 
-      <ul style={{ paddingLeft: "30px", listStyle: "none" }}>
-        {sub_folder.type === "folder" && sub_folder.children?.map(child => (
-          <Sub_folder sub_folder={child} key={child.id} />
-        ))}
-      </ul>
-
+      {sub_folder.type === "folder" && isOpen && (
+        <ul style={{ paddingLeft: "30px", listStyle: "none" }}>
+          {sub_folder.type === "folder" && sub_folder.children?.map(child => (
+            <Sub_folder sub_folder={child} key={child.id} />
+          ))}
+        </ul>
+      )}
       {/* {sub_folder.type === "folder" && (
         <ul style={{ paddingLeft: "30px", listStyle: "none" }}>
           {sub_folder.children?.map(child => (
