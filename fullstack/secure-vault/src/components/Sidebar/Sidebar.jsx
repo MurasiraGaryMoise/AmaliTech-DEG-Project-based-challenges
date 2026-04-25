@@ -1,36 +1,40 @@
 import { VscFolder, VscFolderOpened, VscFile, VscChevronRight } from 'react-icons/vsc'
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import './Sidebar.css'
 
 function filterTree(nodes, query) {
   if (!query) return nodes
-
   return nodes.reduce((acc, node) => {
     if (node.type === 'file') {
-      if (node.name.toLowerCase().includes(query.toLowerCase())) {
-        acc.push(node)
-      }
+      if (node.name.toLowerCase().includes(query.toLowerCase())) acc.push(node)
     } else if (node.type === 'folder') {
       const filteredChildren = filterTree(node.children || [], query)
-      if (filteredChildren.length > 0) {
-        acc.push({ ...node, children: filteredChildren, forceOpen: true })
-      }
+      if (filteredChildren.length > 0) acc.push({ ...node, children: filteredChildren, forceOpen: true })
     }
     return acc
   }, [])
 }
 
-const Sub_folder = ({ sub_folder, onFileSelect }) => {
-  const [isOpen, setIsOpen] = useState(false)
-  const toggleOpen = () => setIsOpen(!isOpen)
+function getVisibleItems(nodes, openFolders) {
+  return nodes.reduce((acc, node) => {
+    acc.push(node)
+    if (node.type === 'folder' && (openFolders.has(node.id) || node.forceOpen)) {
+      acc.push(...getVisibleItems(node.children || [], openFolders))
+    }
+    return acc
+  }, [])
+}
+
+const Sub_folder = ({ sub_folder, onFileSelect, openFolders, toggleFolder, focusedId }) => {
   const isFolder = sub_folder.type === 'folder'
-  const isExpanded = sub_folder.forceOpen || isOpen
+  const isExpanded = openFolders.has(sub_folder.id) || sub_folder.forceOpen
+  const isFocused = sub_folder.id === focusedId
 
   return (
     <li>
       <span
-        className="tree-item"
-        onClick={isFolder ? toggleOpen : () => onFileSelect(sub_folder)}
+        className={`tree-item${isFocused ? ' tree-item--focused' : ''}`}
+        onClick={isFolder ? () => toggleFolder(sub_folder.id) : () => onFileSelect(sub_folder)}
       >
         {isFolder && (
           <VscChevronRight
@@ -45,7 +49,14 @@ const Sub_folder = ({ sub_folder, onFileSelect }) => {
       {isFolder && isExpanded && sub_folder.children?.length > 0 && (
         <ul style={{ paddingLeft: '20px' }}>
           {sub_folder.children.map(child => (
-            <Sub_folder sub_folder={child} key={child.id} onFileSelect={onFileSelect} />
+            <Sub_folder
+              sub_folder={child}
+              key={child.id}
+              onFileSelect={onFileSelect}
+              openFolders={openFolders}
+              toggleFolder={toggleFolder}
+              focusedId={focusedId}
+            />
           ))}
         </ul>
       )}
@@ -55,10 +66,46 @@ const Sub_folder = ({ sub_folder, onFileSelect }) => {
 
 function Sidebar({ data, onFileSelect }) {
   const [searchQuery, setSearchQuery] = useState('')
+  const [openFolders, setOpenFolders] = useState(new Set())
+  const [focusedIndex, setFocusedIndex] = useState(-1)
+
   const filteredData = filterTree(data, searchQuery)
 
+  const toggleFolder = useCallback((id) => {
+    setOpenFolders(prev => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      return next
+    })
+  }, [])
+
+  const handleKeyDown = (e) => {
+    const visibleItems = getVisibleItems(filteredData, openFolders)
+    const item = visibleItems[focusedIndex]
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault()
+      setFocusedIndex(prev => Math.min(prev + 1, visibleItems.length - 1))
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault()
+      setFocusedIndex(prev => Math.max(prev - 1, 0))
+    } else if (e.key === 'ArrowRight') {
+      if (item?.type === 'folder') setOpenFolders(prev => new Set([...prev, item.id]))
+    } else if (e.key === 'ArrowLeft') {
+      if (item?.type === 'folder') {
+        setOpenFolders(prev => { const next = new Set(prev); next.delete(item.id); return next })
+      }
+    } else if (e.key === 'Enter') {
+      if (item?.type === 'file') onFileSelect(item)
+    }
+  }
+
+  const visibleItems = getVisibleItems(filteredData, openFolders)
+  const focusedId = visibleItems[focusedIndex]?.id
+
   return (
-    <aside className="sidebar">
+    <aside className="sidebar" tabIndex={0} onKeyDown={handleKeyDown}>
       <div className="sidebar__header">
         <span className="sidebar__title">File Explorer</span>
         <div className="search-bar">
@@ -79,7 +126,14 @@ function Sidebar({ data, onFileSelect }) {
         <ul>
           {filteredData.length > 0 ? (
             filteredData.map(root => (
-              <Sub_folder sub_folder={root} key={root.id} onFileSelect={onFileSelect} />
+              <Sub_folder
+                sub_folder={root}
+                key={root.id}
+                onFileSelect={onFileSelect}
+                openFolders={openFolders}
+                toggleFolder={toggleFolder}
+                focusedId={focusedId}
+              />
             ))
           ) : (
             <p style={{ color: '#484f58', fontSize: '0.8125rem', padding: '12px 16px' }}>

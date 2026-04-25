@@ -85,3 +85,12 @@
   transition: transform 0.15s ease;
   flex-shrink: 0;
 }
+
+.tree-item--focused {
+  background-color: #1e3a5f;
+  outline: 1px solid #58a6ff;
+}
+
+.sidebar:focus {
+  outline: none;
+}
