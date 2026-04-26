@@ -4,7 +4,15 @@ A high-performance File Explorer UI built for SecureVault Inc. — an enterprise
 
 ---
 
+## Live Demo
 
+[https://amali-tech-deg-project-based-challe-chi.vercel.app/](https://amali-tech-deg-project-based-challe-chi.vercel.app/)
+
+---
+
+## Design File
+
+[<!-- PASTE YOUR FIGMA/PENPOT LINK HERE (set to "Anyone with the link can view") -->](#)
 
 ---
 
@@ -14,8 +22,8 @@ A high-performance File Explorer UI built for SecureVault Inc. — an enterprise
 
 ```bash
 # Clone the repository
-git clone <!-- PASTE YOUR REPO URL HERE -->
-cd secure-vault
+git clone https://github.com/MurasiraGaryMoise/AmaliTech-DEG-Project-based-challenges
+cd fullstack/secure-vault
 
 # Install dependencies
 npm install
