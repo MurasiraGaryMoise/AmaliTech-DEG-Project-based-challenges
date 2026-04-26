@@ -1,6 +1,7 @@
 .node-card {
   position: absolute;
   width: 220px;
+  z-index: 1;
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
   border-left-width: 3px;

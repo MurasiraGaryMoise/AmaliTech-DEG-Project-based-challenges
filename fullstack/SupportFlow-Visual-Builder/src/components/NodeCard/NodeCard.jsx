@@ -1,8 +1,16 @@
+import { useRef, useEffect } from 'react'
 import './NodeCard.css'
 
-function NodeCard({ node, onNodeClick, onNodeDelete }) {
+function NodeCard({ node, onNodeClick, onNodeDelete, onRefReady }) {
+  const cardRef = useRef(null)
+
+  useEffect(() => {
+    onRefReady(node.id, cardRef.current)
+  }, [node.id])
+
   return (
     <div
+      ref={cardRef}
       className={`node-card node-card--${node.type}`}
       style={{ left: node.position.x, top: node.position.y }}
       onClick={() => onNodeClick(node)}
