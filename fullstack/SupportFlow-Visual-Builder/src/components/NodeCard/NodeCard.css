@@ -1,2 +1,102 @@
 .node-card {
+  position: absolute;
+  width: 220px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-left-width: 3px;
+  border-radius: 8px;
+  padding: 12px;
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+}
+
+.node-card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.node-card--start {
+  border-left-color: var(--color-node-start);
+}
+
+.node-card--question {
+  border-left-color: var(--color-node-question);
+}
+
+.node-card--end {
+  border-left-color: var(--color-node-end);
+}
+
+.node-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.node-card-type-badge {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 20px;
+  background-color: var(--color-border);
+  color: var(--color-text-muted);
+}
+
+.node-card--start .node-card-type-badge {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: var(--color-node-start);
+}
+
+.node-card--question .node-card-type-badge {
+  background-color: rgba(99, 102, 241, 0.15);
+  color: var(--color-node-question);
+}
+
+.node-card--end .node-card-type-badge {
+  background-color: rgba(245, 158, 11, 0.15);
+  color: var(--color-node-end);
+}
+
+.node-card-delete-button {
+  opacity: 0;
+  background: transparent;
+  border: none;
+  color: var(--color-text-muted);
+  font-size: 16px;
+  line-height: 1;
+  padding: 0 2px;
+  border-radius: 4px;
+  transition: opacity 0.2s, color 0.2s;
+}
+
+.node-card:hover .node-card-delete-button {
+  opacity: 1;
+}
+
+.node-card-delete-button:hover {
+  color: #ef4444;
+}
+
+.node-card-text {
+  font-size: 13px;
+  color: var(--color-text);
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+.node-card-options {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.node-card-option {
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background-color: var(--color-canvas);
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
 }

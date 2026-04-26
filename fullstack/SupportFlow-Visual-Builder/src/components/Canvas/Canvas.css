@@ -1,2 +1,13 @@
+.canvas-wrapper {
+  flex: 1;
+  overflow: auto;
+  background-color: var(--color-canvas);
+}
+
 .canvas {
+  position: relative;
+  width: 1400px;
+  height: 900px;
+  background-image: radial-gradient(circle, #2a2b35 1px, transparent 1px);
+  background-size: 24px 24px;
 }
