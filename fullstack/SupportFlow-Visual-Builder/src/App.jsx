@@ -1,10 +1,15 @@
 import './App.css'
+import Navbar from './components/Navbar/Navbar'
 
 function App() {
   return (
     <div className="app-container">
+      <Navbar
+        isPreviewMode={false}
+        onToggleMode={() => {}}
+        onAddNode={() => {}}
+      />
       <div className="app-body">
-        <p style={{ color: 'white', padding: '20px' }}>SupportFlow Visual Builder — ready to build</p>
       </div>
     </div>
   )
