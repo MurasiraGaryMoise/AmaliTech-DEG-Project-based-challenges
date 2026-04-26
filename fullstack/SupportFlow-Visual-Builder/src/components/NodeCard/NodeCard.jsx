@@ -1,11 +1,14 @@
-import { useRef, useEffect } from 'react'
+import { useRef, useLayoutEffect } from 'react'
 import './NodeCard.css'
 
 function NodeCard({ node, onNodeClick, onNodeDelete, onRefReady }) {
   const cardRef = useRef(null)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     onRefReady(node.id, cardRef.current)
+    return () => {
+      onRefReady(node.id, null)
+    }
   }, [node.id])
 
   return (
