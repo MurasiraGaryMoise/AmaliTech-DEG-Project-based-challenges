@@ -3,7 +3,7 @@ import './Canvas.css'
 import NodeCard from '../NodeCard/NodeCard'
 import SvgConnectors from '../SvgConnectors/SvgConnectors'
 
-function Canvas({ nodes, onNodeClick, onNodeDelete }) {
+function Canvas({ nodes, onNodeClick }) {
   const nodeRefs = useRef({})
 
   function registerNodeRef(nodeId, element) {
@@ -19,7 +19,6 @@ function Canvas({ nodes, onNodeClick, onNodeDelete }) {
             key={node.id}
             node={node}
             onNodeClick={onNodeClick}
-            onNodeDelete={onNodeDelete}
             onRefReady={registerNodeRef}
           />
         ))}

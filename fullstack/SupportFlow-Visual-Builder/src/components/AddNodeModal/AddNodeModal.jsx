@@ -1,13 +1,19 @@
 import { useState } from 'react'
 import './AddNodeModal.css'
 
-function AddNodeModal({ onClose, onAddNode }) {
+function AddNodeModal({ onClose, onAddNode, nodes }) {
   const [nodeType, setNodeType] = useState('question')
   const [nodeText, setNodeText] = useState('')
+  const [parentNodeId, setParentNodeId] = useState('')
+  const [optionLabel, setOptionLabel] = useState('')
+
+  const connectableNodes = nodes.filter((node) => node.type !== 'end')
+
+  const isFormValid = nodeText.trim() && parentNodeId && optionLabel.trim()
 
   function handleSubmit() {
-    if (!nodeText.trim()) return
-    onAddNode(nodeType, nodeText.trim())
+    if (!isFormValid) return
+    onAddNode(nodeType, nodeText.trim(), parentNodeId, optionLabel.trim())
   }
 
   return (
@@ -45,6 +51,33 @@ function AddNodeModal({ onClose, onAddNode }) {
             />
           </div>
 
+          <div className="modal-field">
+            <label className="modal-label">Connect From</label>
+            <select
+              className="modal-select"
+              value={parentNodeId}
+              onChange={(event) => setParentNodeId(event.target.value)}
+            >
+              <option value="">Select a parent node...</option>
+              {connectableNodes.map((node) => (
+                <option key={node.id} value={node.id}>
+                  {node.text.length > 40 ? node.text.slice(0, 40) + '...' : node.text}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="modal-field">
+            <label className="modal-label">Answer Option Label</label>
+            <input
+              className="modal-input"
+              type="text"
+              placeholder="e.g. Yes, I have tried that"
+              value={optionLabel}
+              onChange={(event) => setOptionLabel(event.target.value)}
+            />
+          </div>
+
         </div>
 
         <div className="modal-footer">
@@ -52,7 +85,7 @@ function AddNodeModal({ onClose, onAddNode }) {
           <button
             className="modal-submit-button"
             onClick={handleSubmit}
-            disabled={!nodeText.trim()}
+            disabled={!isFormValid}
           >
             Add Node
           </button>

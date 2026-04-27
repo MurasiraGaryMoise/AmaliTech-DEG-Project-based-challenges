@@ -1,6 +1,6 @@
 import './Navbar.css'
 
-function Navbar({ isPreviewMode, onToggleMode, onAddNode }) {
+function Navbar({ isPreviewMode, onToggleMode, hasChanges, onExport }) {
   return (
     <nav className="navbar">
 
@@ -11,8 +11,12 @@ function Navbar({ isPreviewMode, onToggleMode, onAddNode }) {
 
       <div className="navbar-actions">
         {!isPreviewMode && (
-          <button className="navbar-add-button" onClick={onAddNode}>
-            + Add Node
+          <button
+            className="navbar-export-button"
+            onClick={onExport}
+            disabled={!hasChanges}
+          >
+            Export
           </button>
         )}
 

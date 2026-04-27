@@ -4,16 +4,15 @@ import Navbar from './components/Navbar/Navbar'
 import Canvas from './components/Canvas/Canvas'
 import EditPanel from './components/EditPanel/EditPanel'
 import PreviewChat from './components/PreviewChat/PreviewChat'
-import AddNodeModal from './components/AddNodeModal/AddNodeModal'
 import flowData from '../flow_data.json'
 
 function App() {
   const [nodes, setNodes] = useState(flowData.nodes)
   const [isPreviewMode, setIsPreviewMode] = useState(false)
   const [selectedNodeId, setSelectedNodeId] = useState(null)
-  const [showAddNodeModal, setShowAddNodeModal] = useState(false)
 
   const selectedNode = nodes.find((node) => node.id === selectedNodeId) ?? null
+  const hasChanges = JSON.stringify(nodes) !== JSON.stringify(flowData.nodes)
 
   function handleToggleMode() {
     setIsPreviewMode((previous) => !previous)
@@ -36,21 +35,15 @@ function App() {
     )
   }
 
-  function handleNodeDelete(nodeId) {
-    setNodes((previousNodes) => previousNodes.filter((node) => node.id !== nodeId))
-    if (selectedNodeId === nodeId) setSelectedNodeId(null)
-  }
-
-  function handleAddNode(nodeType, nodeText) {
-    const newNode = {
-      id: String(Date.now()),
-      type: nodeType,
-      text: nodeText,
-      position: { x: 150, y: 680 },
-      options: [],
-    }
-    setNodes((previousNodes) => [...previousNodes, newNode])
-    setShowAddNodeModal(false)
+  function handleExport() {
+    const fileContent = JSON.stringify({ meta: flowData.meta, nodes }, null, 2)
+    const blob = new Blob([fileContent], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = 'flow_data.json'
+    link.click()
+    URL.revokeObjectURL(url)
   }
 
   return (
@@ -58,7 +51,8 @@ function App() {
       <Navbar
         isPreviewMode={isPreviewMode}
         onToggleMode={handleToggleMode}
-        onAddNode={() => setShowAddNodeModal(true)}
+        hasChanges={hasChanges}
+        onExport={handleExport}
       />
       <div className="app-body">
         {isPreviewMode ? (
@@ -68,7 +62,6 @@ function App() {
             <Canvas
               nodes={nodes}
               onNodeClick={handleNodeClick}
-              onNodeDelete={handleNodeDelete}
             />
             <EditPanel
               node={selectedNode}
@@ -78,13 +71,6 @@ function App() {
           </>
         )}
       </div>
-
-      {showAddNodeModal && (
-        <AddNodeModal
-          onClose={() => setShowAddNodeModal(false)}
-          onAddNode={handleAddNode}
-        />
-      )}
     </div>
   )
 }

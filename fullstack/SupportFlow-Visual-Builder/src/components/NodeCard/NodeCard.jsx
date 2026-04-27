@@ -1,7 +1,7 @@
 import { useRef, useLayoutEffect } from 'react'
 import './NodeCard.css'
 
-function NodeCard({ node, onNodeClick, onNodeDelete, onRefReady }) {
+function NodeCard({ node, onNodeClick, onRefReady }) {
   const cardRef = useRef(null)
 
   useLayoutEffect(() => {
@@ -21,15 +21,6 @@ function NodeCard({ node, onNodeClick, onNodeDelete, onRefReady }) {
 
       <div className="node-card-header">
         <span className="node-card-type-badge">{node.type}</span>
-        <button
-          className="node-card-delete-button"
-          onClick={(event) => {
-            event.stopPropagation()
-            onNodeDelete(node.id)
-          }}
-        >
-          ×
-        </button>
       </div>
 
       <p className="node-card-text">{node.text}</p>
