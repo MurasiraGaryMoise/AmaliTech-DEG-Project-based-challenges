@@ -1,6 +1,15 @@
+import { useState } from 'react'
 import './AddNodeModal.css'
 
 function AddNodeModal({ onClose, onAddNode }) {
+  const [nodeType, setNodeType] = useState('question')
+  const [nodeText, setNodeText] = useState('')
+
+  function handleSubmit() {
+    if (!nodeText.trim()) return
+    onAddNode(nodeType, nodeText.trim())
+  }
+
   return (
     <div className="modal-overlay" onClick={onClose}>
 
@@ -15,7 +24,11 @@ function AddNodeModal({ onClose, onAddNode }) {
 
           <div className="modal-field">
             <label className="modal-label">Node Type</label>
-            <select className="modal-select">
+            <select
+              className="modal-select"
+              value={nodeType}
+              onChange={(event) => setNodeType(event.target.value)}
+            >
               <option value="question">Question</option>
               <option value="end">End</option>
             </select>
@@ -27,6 +40,8 @@ function AddNodeModal({ onClose, onAddNode }) {
               className="modal-textarea"
               placeholder="e.g. Have you contacted us before?"
               rows={3}
+              value={nodeText}
+              onChange={(event) => setNodeText(event.target.value)}
             />
           </div>
 
@@ -34,7 +49,13 @@ function AddNodeModal({ onClose, onAddNode }) {
 
         <div className="modal-footer">
           <button className="modal-cancel-button" onClick={onClose}>Cancel</button>
-          <button className="modal-submit-button" onClick={onAddNode}>Add Node</button>
+          <button
+            className="modal-submit-button"
+            onClick={handleSubmit}
+            disabled={!nodeText.trim()}
+          >
+            Add Node
+          </button>
         </div>
 
       </div>
