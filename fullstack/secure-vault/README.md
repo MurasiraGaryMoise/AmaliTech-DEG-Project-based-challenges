@@ -6,13 +6,13 @@ A high-performance File Explorer UI built for SecureVault Inc. — an enterprise
 
 ## Live Demo
 
-[https://amali-tech-deg-project-based-challe-chi.vercel.app/](https://www.figma.com/design/XLHMKPVmEk3WP6YRlsw4sv/Secure-Vault-Design?node-id=13-71&t=uiwN32ympDDSzJNh-1)
+[https://amali-tech-deg-project-based-challe-chi.vercel.app/](https://amali-tech-deg-project-based-challe-chi.vercel.app/)
 
 ---
 
 ## Design File
 
-[<!-- PASTE YOUR FIGMA/PENPOT LINK HERE (set to "Anyone with the link can view") -->](#)
+[https://www.figma.com/design/XLHMKPVmEk3WP6YRlsw4sv/Secure-Vault-Design?node-id=13-71&t=uiwN32ympDDSzJNh-1](https://www.figma.com/design/XLHMKPVmEk3WP6YRlsw4sv/Secure-Vault-Design?node-id=13-71&t=uiwN32ympDDSzJNh-1)
 
 ---
 
